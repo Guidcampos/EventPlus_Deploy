@@ -2,19 +2,27 @@
     margin-top: 60px;
 }
 
+.container__detalhes{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
 /* .lista-eventos-section {
     background-color: var(--color-white) !important;
     border: 1px solid red;
 } */
-
+/* 
 .select-tp-evento {
     margin-top: 30px;
 }
 
+.
 @media screen and (min-width: 992px){
     
     .select-tp-evento {
         margin-top: 50px;
         max-width: 350px;
     }
-}
+} */

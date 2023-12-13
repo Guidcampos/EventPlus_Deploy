@@ -8,14 +8,36 @@ import ContactSection from "../../components/ContactSection/ContactSection";
 import Title from "../../components/Title/Title";
 import NextEvent from "../../components/NextEvent/NextEvent";
 import Container from "../../components/Container/Container";
-import api from "../../Services/Service";
+import api, { eventsResource } from "../../Services/Service";
 import Notification from "../../components/Notification/Notification";
 import { nextEventResource } from "../../Services/Service";
+
 
 
 const HomePage = () => {
   const [nextEvents, setNextEvents] = useState([]);
   const [notifyUser, setNotifyUser] = useState(); //Componente Notification
+  const [fullEvents, setFullEvents] = useState([]);
+
+  function dataExpirada(dataEvento) {
+    const dataAtualMod = new Date()
+    const dataEventoMod = new Date(dataEvento);
+
+    return dataEventoMod <= dataAtualMod}
+
+    async function getFullEventos() {
+      try {
+        const promise = await api.get(eventsResource);
+        console.log(promise.data);
+       
+        setFullEvents(promise.data);
+        
+
+     
+      } catch (error) {
+        console.log("Deu ruim na API");
+      }
+    }  
 
   // roda somente na inicialização do componente
   useEffect(() => {
@@ -39,7 +61,8 @@ const HomePage = () => {
       }
     }
 
-    getNextEvents(); //chama a função
+    getNextEvents();
+    getFullEventos() //chama a função
   }, []);
 
   return (
@@ -51,8 +74,8 @@ const HomePage = () => {
       {/* PRÓXIMOS EVENTOS */}
       <section className="proximos-eventos">
         <Container>
-          {/* <Title titleText={"Próximos Eventos"} /> */}
 
+          <Title titleText={"Próximos Eventos"} />
           <div className="events-box">
             {nextEvents.map((e) => {
               return (
@@ -61,11 +84,28 @@ const HomePage = () => {
                   title={e.nomeEvento}
                   description={e.descricao}
                   eventDate={e.dataEvento}
-                  idEvent={e.idEvento}
+                  idEvento={e.idEvento}
                 />
               );
             })}
           </div>
+
+          <Title titleText={"Todos Eventos"} />
+            <div className="events-box">
+              {fullEvents.map((e) => {
+                return (
+                  <NextEvent
+                    idEvento={e.idEvento}
+                    title={e.nomeEvento}
+                    description={e.descricao}
+                    eventDate={e.dataEvento}
+                    classAdd={dataExpirada(e.dataEvento)}
+                  />
+                );
+              })}
+            </div>
+          
+
         </Container>
       </section>
 

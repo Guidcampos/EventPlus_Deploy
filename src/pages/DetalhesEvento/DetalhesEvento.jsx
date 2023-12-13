@@ -4,46 +4,70 @@ import Title from "../../components/Title/Title";
 import Container from "../../components/Container/Container";
 import { Select } from "../../components/FormComponents/FormComponents";
 import Spinner from "../../components/Spinner/Spinner";
-import api, { eventsResource } from "../../Services/Service";
+import api, { commentaryEventResource, eventsResource } from "../../Services/Service";
+
 
 
 import "./DetalhesEvento.css";
 import { UserContext } from "../../context/AuthContext";
 import { DetalhesEvents } from "../../components/NextEvent/NextEvent";
+import { useParams } from "react-router-dom";
+import Table from "./TableDetalhes/TableDetalhes";
 
 
 
 const DetalhesEvento = () => {
     const [showSpinner, setShowSpinner] = useState(false);
-   
+
+    // Use o hook useParams para obter o ID da URL
+    const { id } = useParams();
+
     const [eventos, setEventos] = useState([]);
-    const [idEvento, setidEvento] = useState("1d576a4c-08e1-4a43-92ab-a9f5c58fc2ef");
+    const [comentarios, setComentarios] = useState([]);
+    const [idEvento, setidEvento] = useState(id);
     const [nomeEvento, setnomeEvento] = useState("");
-    const [descricao, setdescricao] = useState("");  
-    const [dataEvento, setdataEvento] = useState("");  
+    const [descricao, setdescricao] = useState("");
+    const [dataEvento, setdataEvento] = useState("");
+
+
+
+
+
+
+    async function loadEventsType() {
+        setShowSpinner(true);
+
+        try {
+            const promise = await api.get(eventsResource)
+            setEventos(promise.data);
+            const promiseEvento = await api.get(`/Evento/${idEvento}`)
+            setdescricao(promiseEvento.data.descricao)
+            setnomeEvento(promiseEvento.data.nomeEvento)
+            setdataEvento(promiseEvento.data.dataEvento)
+
+
+        } catch (error) { }
+        setShowSpinner(false);
+    }
+    async function loadComentario() {
+        setShowSpinner(true);
+
+        try {
+            const promise = await api.get(commentaryEventResource)
+            setComentarios(promise.data);
+            
+
+
+        } catch (error) { }
+        setShowSpinner(false);
+    }
 
     
-    
-
 
     useEffect(() => {
-        async function loadEventsType() {
-            setShowSpinner(true);
-      
-            try {
-              const promise = await api.get(eventsResource)
-              setEventos(promise.data);
-              const promiseEvento = await api.get(`/Evento/${idEvento}`)
-              setdescricao(promiseEvento.data.instituicao.titulo)
-              setnomeEvento(promiseEvento.data.nomeEvento)
-              setdataEvento(promiseEvento.data.dataEvento)
-      
-            
-            } catch (error) {}
-            setShowSpinner(false);
-          }
-      
-          loadEventsType();
+
+        loadEventsType();
+        loadComentario();
 
     }, [])
 
@@ -53,17 +77,29 @@ const DetalhesEvento = () => {
             <MainContent>
                 <Container>
                     <Title titleText={"Detalhes"} additionalClass="custom-title" />
-                    
-                            <DetalhesEvents
+                    <br />
+                        
+
+                    <div className="container__detalhes">
+
+                        <DetalhesEvents
                             key={idEvento}
                             title={nomeEvento}
                             description={descricao}
                             eventDate={dataEvento}
-                            
-                            />
-                     
-                  
-             
+                        />
+
+                       
+                        <Table
+                            dados={comentarios}
+
+                        />
+
+
+
+
+                    </div>
+
                 </Container>
             </MainContent>
             {/* SPINNER -Feito com position */}
