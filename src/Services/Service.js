@@ -48,8 +48,8 @@ const externallApiUri = 'https://eventapiguidcampos.azurewebsites.net/api';
 // const externalApiUri = null;
 
 const api = axios.create({
-    // baseURL: localApiUri
-     baseURL: externallApiUri
+    baseURL: localApiUri
+    //  baseURL: externallApiUri
 });
 
 

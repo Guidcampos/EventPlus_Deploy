@@ -72,7 +72,7 @@ const DetalhesEvento = () => {
         loadEventsType();
         loadComentario();
 
-    }, [])
+    }, [userData])
 
 
     return (

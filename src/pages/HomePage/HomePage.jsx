@@ -90,18 +90,25 @@ const HomePage = () => {
             })}
           </div>
 
-          <Title titleText={"Todos Eventos"} />
+          <Title titleText={"Eventos passados"} />
             <div className="events-box">
               {fullEvents.map((e) => {
-                return (
-                  <NextEvent
-                    idEvento={e.idEvento}
-                    title={e.nomeEvento}
-                    description={e.descricao}
-                    eventDate={e.dataEvento}
-                    classAdd={dataExpirada(e.dataEvento)}
-                  />
-                );
+                const eventosExpirados = dataExpirada(e.dataEvento)
+
+                if (eventosExpirados) {
+                  
+                  return (
+                    <NextEvent
+                      idEvento={e.idEvento}
+                      title={e.nomeEvento}
+                      description={e.descricao}
+                      eventDate={e.dataEvento}
+                      classAdd={dataExpirada(e.dataEvento)}
+                    />
+                  );
+                }
+                
+                return null
               })}
             </div>
           

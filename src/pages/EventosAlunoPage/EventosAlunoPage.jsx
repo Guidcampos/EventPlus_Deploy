@@ -150,12 +150,18 @@ const EventosAlunoPage = () => {
     try {
       // api está retornando sempre todos os comentários do usuário
       const promise = await api.get(
-        `${commentaryEventResource}?idUsuario=${idUsuario}&idEvento=${idEvento}`
+        // `${commentaryEventResource}?idUsuario=${idUsuario}&idEvento=${idEvento}`
+     
+      // const promise = await api.get(
+        `${commentaryEventResource}/BuscarPorIdUsuario/${idUsuario}?idEvento=${idEvento}`
       );
+
+      
 
       const myComm = await promise.data.filter(
         (comm) => comm.idEvento === idEvento && comm.idUsuario === idUsuario
       );
+     
 
       // console.log("QUANTIDADE DE DADOS NO ARRAY FILTER");
       // console.log(myComm.length);
@@ -172,7 +178,7 @@ const EventosAlunoPage = () => {
   // cadastrar um comentário = post
   const postMyCommentary = async (descricao, idUsuario, idEvento) => {
     try {
-      const promise = await api.post(commentaryEventResource, {
+      const promise = await api.post(commentaryEventResource + "/CadastroIA", {
         descricao: descricao,
         exibe: true,
         idUsuario: idUsuario,
@@ -183,7 +189,7 @@ const EventosAlunoPage = () => {
         alert("Comentário cadastrado com sucesso");
       }
     } catch (error) {
-      console.log("Erro ao cadastrar o evento");
+      console.log("Erro ao cadastrar o comentario");
       console.log(error);
     }
   };
