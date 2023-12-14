@@ -9,7 +9,7 @@ import "react-tooltip/dist/react-tooltip.css";
 // import trashDelete from "../../../assets/images/trash-delete.svg";
 import "./TableDetalhes.css";
 
-const Table = ({ dados }) => {
+const Table = ({ dados, idEvento }) => {
   return (
     <table className="tbal-data">
       <thead className="tbal-data__head">
@@ -27,27 +27,25 @@ const Table = ({ dados }) => {
       </thead>
       <tbody>
         {dados.map((e) => {
-          return (
-            <tr className="tbal-data__head-row" key={Math.random()}>
-              <td className="tbal-data__data tbal-data__data--big">
-                {e.descricao}
-              </td>
+          {
+            return (
+              <tr className="tbal-data__head-row" key={Math.random()}>
+                <td className="tbal-data__data tbal-data__data--big">
+                  {e.descricao}
+                </td>
 
-              <td className="tbal-data__data tbal-data__data--big tbal-data__btn-actions">
-                {/* {e.dataEvento} */}
-                {e.usuario.nome}
-              </td>
+                <td className="tbal-data__data tbal-data__data--big tbal-data__btn-actions">
+                  {/* {e.dataEvento} */}
+                  {e.usuario.nome}
+                </td>
 
-              <td className="tbal-data__data tbal-data__data--big tbal-data__btn-actions">
-               
-                <ToggleSwitch
-                  toggleActive={e.exibe}
-                
-                />
-              </td>
-            </tr>
-          );
-        })}
+                <td className="tbal-data__data tbal-data__data--big tbal-data__btn-actions">
+                  <ToggleSwitch toggleActive={e.exibe} />
+                </td>
+              </tr>
+            ) ;
+          }
+        })} 
       </tbody>
     </table>
   );

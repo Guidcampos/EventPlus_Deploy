@@ -21,6 +21,7 @@ const DetalhesEvento = () => {
 
     // Use o hook useParams para obter o ID da URL
     const { id } = useParams();
+    const { userData } = useContext(UserContext);
 
     const [eventos, setEventos] = useState([]);
     const [comentarios, setComentarios] = useState([]);
@@ -29,7 +30,7 @@ const DetalhesEvento = () => {
     const [descricao, setdescricao] = useState("");
     const [dataEvento, setdataEvento] = useState("");
 
-
+    
 
 
 
@@ -53,15 +54,17 @@ const DetalhesEvento = () => {
         setShowSpinner(true);
 
         try {
-            const promise = await api.get(commentaryEventResource)
-            setComentarios(promise.data);
-            
-
-
+            const promiseFull = await api.get(commentaryEventResource + `?id=${id}`)
+            const promise = await api.get(commentaryEventResource + `/ListarExibe?id=${id}`)
+           
+            console.log(userData.role);
+           setComentarios(userData.role === "Administrador"  ? promiseFull.data : promise.data );
+           
+           
         } catch (error) { }
         setShowSpinner(false);
     }
-
+    
     
 
     useEffect(() => {
@@ -82,6 +85,8 @@ const DetalhesEvento = () => {
 
                     <div className="container__detalhes">
 
+              
+
                         <DetalhesEvents
                             key={idEvento}
                             title={nomeEvento}
@@ -92,7 +97,7 @@ const DetalhesEvento = () => {
                        
                         <Table
                             dados={comentarios}
-
+                            idEvento={idEvento}
                         />
 
 
