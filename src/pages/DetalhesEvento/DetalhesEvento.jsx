@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import MainContent from "../../components/MainContent/MainContent";
 import Title from "../../components/Title/Title";
 import Container from "../../components/Container/Container";
-import { Select } from "../../components/FormComponents/FormComponents";
 import Spinner from "../../components/Spinner/Spinner";
 import api, { commentaryEventResource, eventsResource } from "../../Services/Service";
 
@@ -26,9 +25,9 @@ const DetalhesEvento = () => {
     const [eventos, setEventos] = useState([]);
     const [comentarios, setComentarios] = useState([]);
     const [idEvento, setidEvento] = useState(id);
-    const [nomeEvento, setnomeEvento] = useState("");
-    const [descricao, setdescricao] = useState("");
-    const [dataEvento, setdataEvento] = useState("");
+    const [nomeEvento, setNomeEvento] = useState("");
+    const [descricao, setDescricao] = useState("");
+    const [dataEvento, setDataEvento] = useState("");
 
     
 
@@ -42,9 +41,9 @@ const DetalhesEvento = () => {
             const promise = await api.get(eventsResource)
             setEventos(promise.data);
             const promiseEvento = await api.get(`/Evento/${idEvento}`)
-            setdescricao(promiseEvento.data.descricao)
-            setnomeEvento(promiseEvento.data.nomeEvento)
-            setdataEvento(promiseEvento.data.dataEvento)
+            setDescricao(promiseEvento.data.descricao)
+            setNomeEvento(promiseEvento.data.nomeEvento)
+            setDataEvento(promiseEvento.data.dataEvento)
 
 
         } catch (error) { }
@@ -85,8 +84,7 @@ const DetalhesEvento = () => {
 
                     <div className="container__detalhes">
 
-              
-
+                       
                         <DetalhesEvents
                             key={idEvento}
                             title={nomeEvento}
